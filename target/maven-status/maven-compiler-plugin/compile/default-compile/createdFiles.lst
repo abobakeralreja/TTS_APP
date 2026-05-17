@@ -1,0 +1,11 @@
+de/thm/voiceapp/controller/TTSController.class
+de/thm/voiceapp/service/TextToSpeechService.class
+de/thm/voiceapp/config/SecurityConfig.class
+de/thm/voiceapp/model/User.class
+de/thm/voiceapp/service/HistoryService.class
+de/thm/voiceapp/service/UserService.class
+de/thm/voiceapp/controller/TTSController$Response.class
+de/thm/voiceapp/controller/UserController.class
+de/thm/voiceapp/VoiceappApplication.class
+de/thm/voiceapp/controller/HistoryController.class
+de/thm/voiceapp/model/TTSRequest.class

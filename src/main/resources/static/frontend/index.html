@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceApp – Premium TTS</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>VoiceApp</h1>
+    <p class="subtitle">AI Text-to-Speech Experience</p>
+
+    <!-- LOGIN -->
+    <div id="login-box" class="card">
+        <h2>Welcome Back</h2>
+
+        <label for="username">Username</label>
+        <input id="username" placeholder="Enter username..." value="user">
+
+        <label for="password">Password</label>
+        <input id="password" placeholder="Enter password..." type="password">
+
+        <button id="login-btn" onclick="login()">Sign In</button>
+
+        <p id="login-error" class="error"></p>
+    </div>
+
+    <!-- APP -->
+    <div id="app" class="card" style="display: none;">
+
+        <div class="app-header">
+            <!-- Buttons are now centered/flexed via CSS -->
+            <div class="app-header-buttons">
+                <button class="secondary" onclick="openSettingsModal()">⚙️ Settings</button>
+                <button class="secondary" onclick="openFavoritesModal()">⭐ Favorites</button>
+                <button class="secondary" onclick="openCategoriesModal()">📂 Categories</button>
+                <button class="secondary" onclick="openHistoryModal()">🕰️ History</button>
+                <button class="secondary" onclick="logout()">🔒 Logout</button>
+            </div>
+        </div>
+
+        <hr style="opacity: 0.3;">
+
+        <!-- TEXT -->
+        <label for="tts-text">Your Text</label>
+        <textarea id="tts-text" placeholder="Type something amazing here to generate audio..."></textarea>
+
+        <!-- VOICE SPEED -->
+        <div style="margin-top: 24px;">
+            <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem;">
+                <span>Voice Speed</span>
+                <span><span id="voice-speed-value">1.00</span>x</span>
+            </div>
+            <input id="voice-speed" type="range" min="0.6" max="1.6" step="0.05" value="1">
+        </div>
+
+        <button id="tts-btn" onclick="sendTTS()">✨ Generate Speech</button>
+        <p id="tts-status" class="info"></p>
+
+        <h3 style="font-family: var(--font-heading); margin-top: 32px; font-weight: 600;">Audio Output</h3>
+        <audio id="audio-player" controls></audio>
+    </div>
+
+</div>
+
+<!-- SETTINGS MODAL -->
+<div id="settings-modal" class="modal hidden">
+    <div class="modal-backdrop" onclick="closeSettingsModal()"></div>
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Settings</h2>
+            <button class="secondary small" onclick="closeSettingsModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Speaking Mode -->
+            <label style="color: var(--primary);">Speaking Mode</label>
+            <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                <label style="margin: 0; display:flex; gap:10px; align-items:center;">
+                    <input type="radio" name="speak-mode" value="sentence" checked style="width:auto; margin:0;">
+                    <span>Speak full sentence on button click</span>
+                </label>
+                <label style="margin-top: 10px; display:flex; gap:10px; align-items:center;">
+                    <input type="radio" name="speak-mode" value="word" style="width:auto; margin:0;">
+                    <span>Speak each word while typing</span>
+                </label>
+            </div>
+
+            <hr>
+
+            <!-- Autocorrect Mode -->
+            <label style="color: var(--primary);">AI Autocorrect</label>
+            <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                <label style="margin: 0; display:flex; gap:10px; align-items:center;">
+                    <input type="radio" name="autocorrect-mode" value="off" checked style="width:auto; margin:0;">
+                    <span>Off (No correction)</span>
+                </label>
+                <label style="margin-top: 10px; display:flex; gap:10px; align-items:center;">
+                    <input type="radio" name="autocorrect-mode" value="word" style="width:auto; margin:0;">
+                    <span>Correct after every word</span>
+                </label>
+                <label style="margin-top: 10px; display:flex; gap:10px; align-items:center;">
+                    <input type="radio" name="autocorrect-mode" value="sentence" style="width:auto; margin:0;">
+                    <span>Correct full sentence before speaking</span>
+                </label>
+            </div>
+
+            <hr>
+
+            <label style="color: var(--primary);">Voice Speed</label>
+            <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem;">
+                <span>Adjust Speed</span>
+                <span><span id="voice-speed-settings-value">1.00</span>x</span>
+            </div>
+            <input id="voice-speed-settings" type="range" min="0.6" max="1.6" step="0.05" value="1">
+        </div>
+    </div>
+</div>
+
+<!-- FAVORITES MODAL -->
+<div id="favorites-modal" class="modal hidden">
+    <div class="modal-backdrop" onclick="closeFavoritesModal()"></div>
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Favorites</h2>
+            <button class="secondary small" onclick="closeFavoritesModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <h3 style="font-size: 1rem; color: var(--text-muted); margin-top:0;">Your Saved Phrases</h3>
+            <div id="favorites-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+
+            <hr>
+
+            <h3 style="font-size: 1rem; color: var(--text-muted);">Add New</h3>
+            <div style="display: flex; gap: 10px;">
+                <input id="new-fav-input" placeholder="Enter phrase...">
+                <button class="secondary" onclick="addFavorite()" style="white-space:nowrap;">+ Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CATEGORIES MODAL -->
+<div id="categories-modal" class="modal hidden">
+    <div class="modal-backdrop" onclick="closeCategoriesModal()"></div>
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Categories</h2>
+            <button class="secondary small" onclick="closeCategoriesModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <div id="categories-view" class="category-card-grid"></div>
+
+            <div id="phrases-view" class="hidden">
+                <div class="phrases-header">
+                    <button class="secondary small" onclick="renderCategoryList()">← Back</button>
+                    <h3 id="phrases-title" style="margin:0;"></h3>
+                </div>
+                <!-- Phrases Grid -->
+                <div id="phrases-list" style="margin-top: 16px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HISTORY MODAL -->
+<div id="history-modal" class="modal hidden">
+    <div class="modal-backdrop" onclick="closeHistoryModal()"></div>
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>History</h2>
+            <div class="modal-header-buttons">
+                <button class="secondary small" onclick="deleteAllHistory()">Clear All 🗑️</button>
+                <button class="secondary small" onclick="closeHistoryModal()">✕</button>
+            </div>
+        </div>
+
+        <div class="modal-body history-body" id="history-list"></div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
