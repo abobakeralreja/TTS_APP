@@ -30,15 +30,15 @@ Das Projekt nutzt ein modernes Tech-Stack:
 
 | Hauptansicht | Kategorien |
 | :---: | :---: |
-| <img src="../foto/all.png" width="400" /> | <img src="../foto/cat.png" width="400" /> |
+| <img src="foto/all.png" width="400" /> | <img src="foto/cat.png" width="400" /> |
 
 | Favoriten | Verlauf |
 | :---: | :---: |
-| <img src="../foto/fev.png" width="400" /> | <img src="../foto/his.png" width="400" /> |
+| <img src="foto/fev.png" width="400" /> | <img src="foto/his.png" width="400" /> |
 
 | Einstellungen | Feedback |
 | :---: | :---: |
-| <img src="../foto/sit.png" width="400" /> | <img src="../foto/feed.png" width="400" /> |
+| <img src="foto/sit.png" width="400" /> | <img src="foto/feed.png" width="400" /> |
 
 ## 🚀 Lokale Ausführung (Development)
 
